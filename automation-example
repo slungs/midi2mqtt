@@ -1,0 +1,15 @@
+alias: "Change light color by turning a knob"
+trigger:
+  - platform: mqtt
+    topic: midimonster/launchkey/cc/28
+condition: []
+action:
+  - service: light.turn_on
+    data:
+      entity_id: light.example
+      # Convert the CC value to Hue value
+      # Saturation = 100 
+      hs_color:
+        - "{{ (trigger.payload | int * 360 / 127) | round(1) }}"
+        - 100
+mode: single
